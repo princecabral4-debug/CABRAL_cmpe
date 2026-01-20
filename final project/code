@@ -1,0 +1,78 @@
+import tkinter as tk
+from tkinter import ttk, messagebox
+
+colors = {
+    "black": 0,
+    "brown": 1,
+    "red": 2,
+    "orange": 3,
+    "yellow": 4,
+    "green": 5,
+    "blue": 6,
+    "violet": 7,
+    "gray": 8,
+    "white": 9
+}
+
+multiplier = {
+    "black": 1,
+    "brown": 10,
+    "red": 100,
+    "orange": 1000,
+    "yellow": 10000,
+    "green": 100000,
+    "blue": 1000000,
+    "violet": 10000000,
+    "gray": 100000000,
+    "white": 1000000000
+}
+
+tolerance = {
+    "gold": "±5%",
+    "silver": "±10%"
+}
+
+
+def calculate():
+    try:
+        b1 = band1_var.get()
+        b2 = band2_var.get()
+        b3 = band3_var.get()
+        b4 = band4_var.get()
+
+        value = (colors[b1] * 10 + colors[b2]) * multiplier[b3]
+        result_label.config(text=f"Resistance: {value} Ω {tolerance[b4]}")
+    except:
+        messagebox.showerror("Error", "Please select all bands correctly.")
+
+root = tk.Tk()
+root.title("Resistor Color Band Calculator (4-band)")
+root.geometry("400x300")
+
+
+band1_var = tk.StringVar()
+band2_var = tk.StringVar()
+band3_var = tk.StringVar()
+band4_var = tk.StringVar()
+
+
+tk.Label(root, text="1st Band").pack()
+ttk.Combobox(root, textvariable=band1_var, values=list(colors.keys()), state="readonly").pack()
+
+tk.Label(root, text="2nd Band").pack()
+ttk.Combobox(root, textvariable=band2_var, values=list(colors.keys()), state="readonly").pack()
+
+tk.Label(root, text="Multiplier Band").pack()
+ttk.Combobox(root, textvariable=band3_var, values=list(multiplier.keys()), state="readonly").pack()
+
+tk.Label(root, text="Tolerance Band").pack()
+ttk.Combobox(root, textvariable=band4_var, values=list(tolerance.keys()), state="readonly").pack()
+
+
+tk.Button(root, text="Calculate", command=calculate).pack(pady=10)
+
+
+result_label = tk.Label(root, text="Resistance: ")
+result_label.pack(pady=10)
+
+root.mainloop()
